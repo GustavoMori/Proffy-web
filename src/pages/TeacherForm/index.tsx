@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import api from '../../services/api';
+import { useHistory } from 'react-router-dom'
 
 // Components
 import PageHeader from '../../componentes/PageHeader';
@@ -13,6 +14,8 @@ import warningIcon from '../../assets/images/icons/warning.svg'
 
 
 function TeacherForm() {
+    const history = useHistory();
+
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
@@ -37,23 +40,6 @@ function TeacherForm() {
         scheduleItems.push()
     }
 
-    function handleCreateClass(e: FormEvent){
-        e.preventDefault();
-        api.post('classes', {
-            name,
-            avatar,
-            whatsapp,
-            bio,
-            subject,
-            cost: Number(cost),
-            schedule: scheduleItems
-        }).then(() => {
-            alert('Cadastro realizado com sucesso!')
-        }).catch(() => {
-            alert('Erro no cadastro!')
-        })
-    }
-    
     function setScheduleItemValue(position: number, field: string, value: string){
         const updatedScheduleItems = scheduleItems.map((scheduleItem, index) => {
             if (index === position){
@@ -65,6 +51,24 @@ function TeacherForm() {
         setScheduleItems(updatedScheduleItems);
     }
 
+    function handleCreateClass(e: FormEvent){
+        e.preventDefault();
+        api.post('classes', {
+            name,
+            avatar,
+            whatsapp,
+            bio,
+            subject,
+            cost: Number(cost),
+            schedule: scheduleItems
+        }).then(() => {
+            alert('Cadastro realizado com sucesso!');
+            history.push('/');
+        }).catch(() => {
+            alert('Erro no cadastro!');
+        })
+    }
+    
 
     return(
     <div id="page-teacher-form" className="container">
@@ -133,7 +137,7 @@ function TeacherForm() {
 
                 <fieldset>
                     <legend>Horários disponíveis
-                            <button type="submit" onClick={addNewScheduleItem}>
+                            <button type="button" onClick={addNewScheduleItem}>
                                 + Novo horário
                             </button>
                     </legend>
@@ -181,7 +185,7 @@ function TeacherForm() {
                         Importante <br />
                         Preencha todos os dados
                     </p>
-                    <button type="button">
+                    <button type="submit">
                         Salvar cadastro
                     </button>    
                 </footer>
