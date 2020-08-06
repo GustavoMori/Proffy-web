@@ -2,26 +2,40 @@ import React from 'react';
 // Icons and images
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg'
 import './styles.css'
-function TeacherItem(){
+
+
+export interface Teacher {
+    id: number;
+    avatar: string;
+    bio: string;
+    cost: number;
+    name: string;
+    subject: string;
+    whatsapp: number;
+}
+
+
+export interface TeacherItemProps {
+    teacher: Teacher;
+}
+const TeacherItem: React.FunctionComponent<TeacherItemProps> = ({teacher}) => {
     return (
         <article className="teacher-item">
                     <header>
-                        <img src="https://avatars0.githubusercontent.com/u/54715328?s=460&u=53f433753f6cb57a35a14d25e86ac4a1f0e4b932&v=4" alt="Gustavo Mori"/>
+                        <img src={teacher.avatar} alt={teacher.name}/>
                         <div>
-                            <strong>Gustavo Mori</strong>
-                            <span>HTML+CSS</span>
+                            <strong>{teacher.name}</strong>
+                            <span>{teacher.subject}</span>
                         </div>
                     </header>
 
                     <p>
-                        Entusiasta de técnologia e um eterno aluno.
-                        <br/><br/>
-                        Focado atualmente em React, React Native, e NodeJS.
+                        {teacher.bio}
                     </p>
                     <footer>
                         <p>
                             Preço/hora
-                            <strong>R$ 60,00</strong>
+                            <strong>R$ {teacher.cost}</strong>
                         </p>
                         <button type="button">
                             <img src={whatsappIcon} alt="Whatsapp"/>
